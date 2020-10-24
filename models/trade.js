@@ -26,6 +26,10 @@ const TradeSchema = new Schema({
     trim: true,
     required: true,
   },
+  buy_metric_value: {
+    type: String,
+    trim: true,
+  },
   sell_order_id: {
     type: String,
     trim: true,
@@ -35,6 +39,10 @@ const TradeSchema = new Schema({
     trim: true,
   },
   sell_estimated_effective_price: {
+    type: String,
+    trim: true,
+  },
+  sell_metric_value: {
     type: String,
     trim: true,
   },
@@ -54,6 +62,10 @@ const TradeSchema = new Schema({
       trim: true,
     },
     effective_total: {
+      type: String,
+      trim: true,
+    },
+    metric_value: {
       type: String,
       trim: true,
     },

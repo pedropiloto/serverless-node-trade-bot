@@ -45,7 +45,7 @@ module.exports.execute = async (event) => {
 
   try {
     const success = await placeOrderInteractor.call(
-      complexSymbol, payload.action, payload.platform,
+      complexSymbol, payload.action, payload.platform, payload.metric_value,
     );
     console.log('success', success);
     return successRequestResponse(

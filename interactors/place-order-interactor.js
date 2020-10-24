@@ -5,7 +5,7 @@ const { TradeModel, STARTED, COMPLETED } = require('../models/trade');
 const { UnknownActionError } = require('../errors');
 const EstimatePriceInteractor = require('./estimate-price');
 
-const MAX_FUNDS_AMOUNT = 20;
+const MAX_FUNDS_AMOUNT = 100;
 
 class PlaceOrderInteractor {
   constructor() {
@@ -13,17 +13,17 @@ class PlaceOrderInteractor {
     this.estimatePriceInteractor = new EstimatePriceInteractor();
   }
 
-  async call(complexSymbol, action, platform) {
+  async call(complexSymbol, action, platform, metricValue) {
     if (action === 'BUY') {
-      return this.buy(complexSymbol, action, platform);
+      return this.buy(complexSymbol, action, platform, metricValue);
     } if (action === 'SELL') {
-      return this.sell(complexSymbol, action);
+      return this.sell(complexSymbol, action, metricValue);
     }
     console.log('unknown action:', action);
     throw UnknownActionError('unknown action:', action);
   }
 
-  async buy(complexSymbol, action, platform) {
+  async buy(complexSymbol, action, platform, metricValue) {
     let canBuy = false;
 
     try {
@@ -48,6 +48,7 @@ class PlaceOrderInteractor {
           buy_last_closing_price: buyEstimate.lastClosingPrice.toString(),
           buy_estimated_amount: buyEstimate.amount.toString(),
           buy_estimated_effective_price: buyEstimate.effectiveTotal.toString(),
+          buy_metric_value: metricValue,
           platform,
           status: STARTED,
         });
@@ -61,7 +62,7 @@ class PlaceOrderInteractor {
     return false;
   }
 
-  async sell(complexSymbol, action) {
+  async sell(complexSymbol, action, metricValue) {
     const accounts = await this.coinbaseGateway.getAccounts();
     const account = accounts.find((item) => item.currency === complexSymbol.target_currency);
     console.log('checking balance on account:', account);
@@ -90,6 +91,7 @@ class PlaceOrderInteractor {
           date: Date.now(),
           market_value: sellEstimate.lastClosingPrice.toString(),
           effective_total: sellEstimate.effectiveTotal.toString(),
+          metric_value: metricValue,
         });
         await TradeModel.findOneAndUpdate(
           // eslint-disable-next-line no-underscore-dangle
@@ -118,6 +120,7 @@ class PlaceOrderInteractor {
           sell_order_id: order.id,
           sell_last_closing_price: sellEstimate.lastClosingPrice.toString(),
           sell_estimated_effective_price: sellEstimate.effectiveTotal.toString(),
+          sell_metric_value: metricValue,
           finished_at: Date.now(),
           status: COMPLETED,
         });

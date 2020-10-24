@@ -13,6 +13,7 @@ module.exports.generate = async () => {
 
   try {
     const summary = await generateSummaryInteractor.call();
+    console.log(summary);
     return successRequestResponse(
       {
         summary,

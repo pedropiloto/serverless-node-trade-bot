@@ -71,7 +71,7 @@ class GenerateSummaryInteractor {
       // Total Incomplete Trades
       result[trade.symbol].incomplete_trades = incompleteTrades.length;
     });
-    console.log(result);
+    return result;
   }
 }
 

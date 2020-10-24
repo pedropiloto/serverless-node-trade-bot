@@ -9,6 +9,7 @@ jspm_packages
 env/env.json
 env/env.dev.json
 env/env.stg.json
+env/env.prd.json
 
 .idea/
 
