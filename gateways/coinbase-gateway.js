@@ -52,7 +52,7 @@ class CoinbaseGateway {
         after: fetchResult.pagination.after,
       });
       console.log('CENAS', fetchResult);
-      if (fetchResult.data > 0) {
+      if (fetchResult.data.length > 0) {
         console.log('wow!! more than 100 fills, maybe it would be nice to check the order_id:', orderId);
         fills.push(...fetchResult.data);
       }

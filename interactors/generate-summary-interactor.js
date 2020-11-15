@@ -29,7 +29,7 @@ class GenerateSummaryInteractor {
         const sizeBig = new Big(current.size);
         const feeBig = new Big(current.fee);
         const totalCost = priceBig.mul(sizeBig).add(feeBig);
-        return accumulator + totalCost;
+        return new Big(accumulator).add(totalCost);
       }, 0);
 
       const totalSell = trade.sell_fills.reduce((accumulator, current) => {
@@ -37,7 +37,7 @@ class GenerateSummaryInteractor {
         const sizeBig = new Big(current.size);
         const feeBig = new Big(current.fee);
         const totalCost = priceBig.mul(sizeBig).sub(feeBig);
-        return accumulator + totalCost;
+        return new Big(accumulator).add(totalCost);
       }, 0);
 
       if (!result[trade.symbol]) result[trade.symbol] = {};

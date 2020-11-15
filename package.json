@@ -7,22 +7,23 @@
     "big.js": "^6.0.1",
     "coinbase-pro": "^0.9.0",
     "coinbase-pro-node": "^2.11.0",
-    "mongoose": "^5.10.9",
-    "serverless-local-dev-server": "^0.3.1"
+    "mongoose": "^5.10.9"
   },
   "devDependencies": {
     "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "serverless-offline": "^6.8.0"
   },
   "scripts": {
+    "start": "NODE_ENV=local sls offline start --stage local",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pedropiloto/serverless-node-trade-bot.git"
   },
-  "author": "",
+  "author": "Pedro Piloto",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/pedropiloto/serverless-node-trade-bot/issues"

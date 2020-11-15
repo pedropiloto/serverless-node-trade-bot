@@ -49,7 +49,4 @@ functions:
       mongodb_url: ${file(./config/config.js):fetchMongodbUrl}
 
 plugins:
-  - serverless-local-dev-server
-
-custom:
-  localDevStaticFolder: ./
+  - serverless-offline
