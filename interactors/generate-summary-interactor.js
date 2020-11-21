@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-unused-expressions */
 const Big = require('big.js');
 const CoinbaseGateway = require('../gateways/coinbase-gateway');
@@ -10,18 +12,20 @@ class GenerateSummaryInteractor {
 
   async call() {
     const result = {};
+    const enrichedTrades = [];
 
     const completeTrades = await TradeModel.find({ status: COMPLETED });
     const incompleteTrades = await TradeModel.find({ status: STARTED });
 
-    const enrichedTrades = (await Promise.all(completeTrades.map(async (trade) => {
+    for (let i = 0; i < completeTrades.length; i++) {
       const buyFills = await
-      this.coinbaseGateway.getFillsByOrderId(trade.buy_order_id);
+      this.coinbaseGateway.getFillsByOrderId(completeTrades[i].buy_order_id);
       const sellFills = await
-      this.coinbaseGateway.getFillsByOrderId(trade.sell_order_id);
-
-      return Object.assign(trade, { buy_fills: buyFills, sell_fills: sellFills });
-    })));
+      this.coinbaseGateway.getFillsByOrderId(completeTrades[i].sell_order_id);
+      enrichedTrades.push(
+        Object.assign(completeTrades[i], { buy_fills: buyFills, sell_fills: sellFills }),
+      );
+    }
 
     enrichedTrades.forEach((trade) => {
       const totalBuy = trade.buy_fills.reduce((accumulator, current) => {
